@@ -190,7 +190,7 @@ static void Json(BufferFiller& buf){
   // return a json string containing all ldr hitcounts and current values  
   
   buf.emit_p(PSTR("$F$F$F"
-                  "{version: $D, ldrcount: $D}"), 
+                  "{\"version\": $D, \"ldrcount\": $D}"), 
              http_OK, http_JSON, http_NOCACHE, ver, ldrhighcount); 
   
 }
