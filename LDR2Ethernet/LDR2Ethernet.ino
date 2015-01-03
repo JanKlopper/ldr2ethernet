@@ -5,17 +5,17 @@
 const byte
   chipSelect = 8,
   frameHeader = 54,
-  LDRInterruptPin 0,
+  LDRInterruptPin = 0,
   ver = 1,
   ldrpin = 2;
 
 // ethernet interface mac address, must be unique on the LAN
-const byte etherMac[6] = {0x74, 0x69, 0x69, 0x2D, 0x31, 0x06};
+const byte etherMac[6] = {0x74, 0x69, 0x69, 0x2D, 0x31, 0x08};
 
-const char http_OK[] PROGMEM = "HTTP/1.0 200 OK\r\n"
-const char http_NOK[] PROGMEM = "HTTP/1.0 404 NOT FOUND\r\n"
-const char http_JSON[] PROGMEM = "Content-Type: application/json\r\n"
-const char http_HTML[] PROGMEM = "Content-Type: text/html\r\n" 
+const char http_OK[] PROGMEM = "HTTP/1.0 200 OK\r\n";
+const char http_NOK[] PROGMEM = "HTTP/1.0 404 NOT FOUND\r\n";
+const char http_JSON[] PROGMEM = "Content-Type: application/json\r\n";
+const char http_HTML[] PROGMEM = "Content-Type: text/html\r\n";
 const char http_NOCACHE[] PROGMEM = "Pragma: no-cache\r\n\r\n";
 
 // offset addresses for the IP, MAC in the eeprom
@@ -54,13 +54,15 @@ void setup () {
   readIP(etherIP);
   bool online = false;
   if (etherIP[0] == 0 || etherIP[0] == 255){
-    Serial.println("Setting up DHCP");
-    if (!ether.dhcpSetup()){
-      Serial.println( "DHCP failed");
-    } else {
-      Serial.print("Online at DHCP:");
-      ether.printIp("IP: ", ether.myip);
-      online = true;
+    while(!online){
+      Serial.println("Setting up DHCP");
+      if (!ether.dhcpSetup()){
+        Serial.println( "DHCP failed");
+      } else {
+        Serial.print("Online at DHCP:");
+        ether.printIp("IP: ", ether.myip);
+        online = true;
+      }
     }
   }
   if(!online){
